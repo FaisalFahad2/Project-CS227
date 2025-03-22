@@ -7,12 +7,14 @@ public class PCB {
     private int waitingTime;
     private int priority;
     
-    public PCB(int pid, int burstTime, int priority, int requiredMemory, String state ) {
+    public PCB(int pid, int burstTime, int priority, int requiredMemory) {
         this.PID = pid;
-        this.state = state;
         this.burstTime = burstTime;
         this.requiredMemory = requiredMemory;
         this.priority = priority;
+        this.state = "NEW";
+        this.turnaroundTime = 0;
+        this.waitingTime = 0;
     }
 
     // Getters and Setters

@@ -9,12 +9,10 @@ public class SystemCallsImp implements SystemCalls {
     // maybe not put here
     private PCB currentProcess;
     private List<PCB> readyQueue;
-    private List<PCB> jobQueue;
     // maybe not put here
     
     public SystemCallsImp() {
         readyQueue = new ArrayList<>();
-        jobQueue = new ArrayList<>();
     }
     
     public void allocate(int size) {
