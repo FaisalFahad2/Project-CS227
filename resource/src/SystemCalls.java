@@ -8,5 +8,5 @@ public interface SystemCalls {
   public void deallocate(int size);
   public void getpid(PCB process);
   public void print(String str);
-  public void fork (int pid, int burstTime, int priority, int requiredMemory, String state);
+  public void fork (int pid, int burstTime, int priority, int requiredMemory);
 }

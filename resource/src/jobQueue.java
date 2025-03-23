@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class jobQueue {
   private ArrayList<PCB> jobQueue = new ArrayList<>();
   private int currentProcessIndex = 0;
-  
+
   public synchronized void addJob(PCB process) {
       jobQueue.add(process);
   }

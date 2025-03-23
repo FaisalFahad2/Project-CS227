@@ -3,8 +3,6 @@ import java.util.List;
 
 public class SystemCallsImp implements SystemCalls {
 
-    private final int memory = 2400; // MB of memory
-    private int memoryAvailable = memory;
     
     // maybe not put here
     private PCB currentProcess;
@@ -43,7 +41,7 @@ public class SystemCallsImp implements SystemCalls {
         
     }
     
-    public void fork(int pid, int burstTime, int priority, int requiredMemory, String state) {
+    public void fork(int pid, int burstTime, int priority, int requiredMemory) {
         
     }
 

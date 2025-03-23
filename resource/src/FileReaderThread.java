@@ -31,6 +31,7 @@ public class FileReaderThread implements Runnable {
           int burstTime = Integer.parseInt(parts[1]);
           int priority = Integer.parseInt(parts[2]);
           int memoryRequired = Integer.parseInt(parts[3]);
+          
           PCB process = new PCB(processID, burstTime, priority, memoryRequired);
 
           jobQueue.addJob(process);
