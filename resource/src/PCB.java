@@ -1,8 +1,8 @@
 public class PCB {
-    private int PID;
+    private final int PID;
     private String state;
     private int burstTime;
-    private int requiredMemory;
+    private final int requiredMemory;
     private int turnaroundTime;
     private int waitingTime;
     private int priority;
@@ -18,16 +18,15 @@ public class PCB {
     }
 
     // Getters and Setters
-    public int getPID() {
+    public int getPid() {
         return PID;
     }
-    public void setPID(int PID) {
-        this.PID = PID;
-    }
+
     public String getState() {
         return state;
     }
     public void setState(String state) {
+
         this.state = state;
     }
     public int getBurstTime() {
@@ -38,9 +37,6 @@ public class PCB {
     }
     public int getRequiredMemory() {
         return requiredMemory;
-    }
-    public void setRequiredMemory(int requiredMemory) {
-        this.requiredMemory = requiredMemory;
     }
     public int getTurnaroundTime() {
         return turnaroundTime;

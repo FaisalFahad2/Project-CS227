@@ -1,12 +1,18 @@
 public interface SystemCalls {
   
-  public void swap(String filename); // maybe not necessary
 
   public void exec(PCB process);
-  public void exit(PCB process);
-  public void allocate(int size);
-  public void deallocate(int size);
+  public void terminated(PCB process);
+  public boolean allocate(PCB process);
+  public void deallocate(PCB process);
   public void getpid(PCB process);
   public void print(String str);
-  public void fork (int pid, int burstTime, int priority, int requiredMemory);
+  public void crateProcess(int pid, int burstTime, int priority, int requiredMemory);
+  public boolean isJobQueueEmpty();
+  public PCB getJobQueue();
+  public PCB getNextReadyQueue();
+  public boolean removeJob(PCB process);
+  public void addToReadyQueue(PCB process);
+ 
+
 }
