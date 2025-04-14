@@ -31,6 +31,10 @@ public class ReadyQueue {
         currentProcessIndex = (currentProcessIndex + 1) % numReady;
         return readyQueue.get(currentProcessIndex);
     }
+    
+     public synchronized List<PCB> getReadyProcesses() {
+        return new ArrayList<>(readyQueue);
+    }
 
     public synchronized boolean isEmpty() {
         return numReady == 0;
