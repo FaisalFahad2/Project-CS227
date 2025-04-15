@@ -62,7 +62,7 @@ public class Main {
 		ReadyQueue readyQueue = new ReadyQueue();
 		memoryManagment memoryManager = new memoryManagment();
 		SystemCalls system = new SystemCallsImp(jobQueue, readyQueue, memoryManager);
-		FileReaderThread io = new FileReaderThread("src/job.txt", system);
+		FileReaderThread io = new FileReaderThread("src/job2.txt", system);
 		Thread t1 = new Thread(io);
 		t1.start();
 
@@ -76,12 +76,17 @@ public class Main {
 		Thread t2 = new Thread(jobLoaderThread);
 		t2.start();
 		try {
-			Thread.sleep(500);
+			Thread.sleep(700);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		PriorityScheduling p = new PriorityScheduling(system,readyQueue);
 		p.run(jobQueue);
+		try {
+			t2.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void case_2() {
@@ -91,7 +96,7 @@ public class Main {
 		ReadyQueue readyQueue = new ReadyQueue();
 		memoryManagment memoryManager = new memoryManagment();
 		SystemCalls system = new SystemCallsImp(jobQueue, readyQueue, memoryManager);
-		FileReaderThread io = new FileReaderThread("src/job.txt", system);
+		FileReaderThread io = new FileReaderThread("src/job2.txt", system);
 		Thread t1 = new Thread(io);
 		t1.start();
 
@@ -111,7 +116,11 @@ public class Main {
 		}
 		RoundRobin r = new RoundRobin(7);
 		r.schedule(readyQueue, jobQueue, system);
-
+		try {
+			t2.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void case_1() {
@@ -121,7 +130,7 @@ public class Main {
 		ReadyQueue readyQueue = new ReadyQueue();
 		memoryManagment memoryManager = new memoryManagment();
 		SystemCalls system = new SystemCallsImp(jobQueue, readyQueue, memoryManager);
-		FileReaderThread io = new FileReaderThread("src/job.txt", system);
+		FileReaderThread io = new FileReaderThread("src/job2.txt", system);
 		Thread t1 = new Thread(io);
 		t1.start();
 
@@ -141,9 +150,15 @@ public class Main {
 			e.printStackTrace();
 		}
 
+
 		FCFS fcfs = new FCFS(readyQueue);
 
 		fcfs.schedule(readyQueue, jobQueue, system);
+		try {
+			t2.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
