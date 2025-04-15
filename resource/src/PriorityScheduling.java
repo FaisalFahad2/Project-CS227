@@ -33,12 +33,7 @@ public class PriorityScheduling {
 	            List<PCB> readyProcesses = readyQueue.getReadyProcesses();
 	            if (readyProcesses.isEmpty()) {
 	                System.out.println("Ready Queue is empty. Scheduling complete.");
-	                try {
-		                Thread.sleep(700);
-		            } catch (InterruptedException e) {
-		                e.printStackTrace();
-		            }
-	                continue;
+					break;
 	            }
 	            // print for test
 	            readyQueue.printReadyQueue();
@@ -46,6 +41,7 @@ public class PriorityScheduling {
 	            for (PCB process : readyProcesses) {
 	                process.incrementWaitingCycles();
 	                if (process.getWaitingCycles() >= StarvationThreshold) {
+						if (!starvationProcess.contains(process.getPid()))
 						starvationProcess.add(process.getPid());
 	                    System.out.println("Starvation detected for process: " + process);
 	                }
@@ -54,12 +50,12 @@ public class PriorityScheduling {
 	                }
 	            }
 				num++;
-//	            System.out.println("Selected Highest Priority Process: " + highestPriorityProcess);
+	            System.out.println("Selected Highest Priority Process: " + highestPriorityProcess);
 	            highestPriorityProcess.setWaitingTime(currentTime);
-	            //print wating time for test
-	            System.out.println(highestPriorityProcess.getWaitingTime());
+//	            //print wating time for test
+//	            System.out.println(highestPriorityProcess.getWaitingTime());
 	            highestPriorityProcess.setState("RUNNING");
-//	            System.out.println("Scheduled Process (now running): " + highestPriorityProcess);
+	            System.out.println("Scheduled Process (now running): " + highestPriorityProcess);
 
 	            try {
 	                Thread.sleep(700);
@@ -76,7 +72,7 @@ public class PriorityScheduling {
 			processCount++;
 			totalWaitingTime += highestPriorityProcess.getWaitingTime();
 			totalTurnaroundTime += highestPriorityProcess.getTurnaroundTime();
-//            System.out.println("Terminated Process: " + highestPriorityProcess);
+           System.out.println("Terminated Process: " + highestPriorityProcess);
 		}
 		double averageWaitingTime = (double) totalWaitingTime / processCount;
 		double averageTurnaroundTime = (double) totalTurnaroundTime / processCount;
