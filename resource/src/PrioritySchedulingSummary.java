@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class PriorityScheduling {
+public class PrioritySchedulingSummary {
     private SystemCalls systemCalls;
     private ReadyQueue readyQueue;
     private int currentTime = 0;
@@ -14,7 +14,7 @@ public class PriorityScheduling {
     private ArrayList<Integer> processList = new ArrayList<>();
     private ArrayList<Integer> timeList = new ArrayList<>();
 
-    public PriorityScheduling(SystemCalls sCalls, ReadyQueue readyQueue) {
+    public PrioritySchedulingSummary(SystemCalls sCalls, ReadyQueue readyQueue) {
         this.systemCalls = sCalls;
         this.readyQueue = readyQueue;
     }
@@ -31,29 +31,20 @@ public class PriorityScheduling {
                 System.out.println("Ready Queue is empty. Scheduling complete.");
                 break;
             }
-            readyQueue.printReadyQueue();
             PCB highestPriorityProcess = readyProcesses.get(0);
             for (PCB process : readyProcesses) {
                 process.incrementWaitingCycles();
                 if (process.getWaitingCycles() >= StarvationThreshold) {
                     if (!starvationProcess.contains(process.getPid()))
                         starvationProcess.add(process.getPid());
-                    System.out.println("Starvation detected for process: " + process);
                 }
                 if (process.getPriority() > highestPriorityProcess.getPriority()) {
                     highestPriorityProcess = process;
                 }
             }
             num++;
-            System.out.println("Selected Highest Priority Process: " + highestPriorityProcess);
             highestPriorityProcess.setWaitingTime(currentTime);
             highestPriorityProcess.setState("RUNNING");
-            System.out.println("Scheduled Process (now running): " + highestPriorityProcess);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             timeList.add(highestPriorityProcess.getWaitingTime());
             currentTime += highestPriorityProcess.getBurstTime();
             highestPriorityProcess
@@ -64,10 +55,16 @@ public class PriorityScheduling {
             processCount++;
             totalWaitingTime += highestPriorityProcess.getWaitingTime();
             totalTurnaroundTime += highestPriorityProcess.getTurnaroundTime();
-            System.out.println("Terminated Process: " + highestPriorityProcess);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         double averageWaitingTime = (double) totalWaitingTime / processCount;
         double averageTurnaroundTime = (double) totalTurnaroundTime / processCount;
+
+            System.out.println("\n=== Statistics ===");
         printGanttChart();
         System.out.println("Total processes executed: " + processCount);
         System.out.println("Average waiting time: " + averageWaitingTime);

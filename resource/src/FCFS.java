@@ -25,6 +25,8 @@ public class FCFS {
 		while (!readyQueue.isEmpty() && num != jq.getNumOfProcsess()) {
 			List<PCB> executedProcesses = readyQueue.getReadyProcesses();
 			for (PCB p : executedProcesses) {
+				readyQueue.printReadyQueue();
+				System.out.println("Selected Process: " + p);
 				int waitingTime = currentTime;
 				int turnaroundTime = waitingTime + p.getBurstTime();
 				timeList.add(currentTime);
@@ -34,7 +36,10 @@ public class FCFS {
 				totalWaitingTime += waitingTime;
 				totalTurnaroundTime += turnaroundTime;
 				p.setTurnaroundTime(turnaroundTime);
+				p.setState("RUNNING");
+				System.out.println("Scheduled Process (now running): " + p);
 				sc.terminated(p);
+				System.out.println("Terminated Process: " + p);
 				num++;
 
 				try {

@@ -25,7 +25,7 @@ public class SystemCallsImp implements SystemCalls {
         
     }
     
-    public void terminated(PCB process) {
+    public synchronized void  terminated(PCB process) {
         
         process.setState("TERMINATED");
         jobQueue.removeJob(process);

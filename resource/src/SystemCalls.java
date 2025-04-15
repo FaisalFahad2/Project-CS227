@@ -13,6 +13,6 @@ public interface SystemCalls {
   public PCB getNextReadyQueue();
   public boolean removeJob(PCB process);
   public void addToReadyQueue(PCB process);
- 
+
 
 }

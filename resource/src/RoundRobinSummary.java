@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.List;
 
-public class RoundRobin {
+public class RoundRobinSummary {
     private final int quantum;
     int time[];
     public static String processNum;
@@ -15,7 +15,7 @@ public class RoundRobin {
     double avgWaitingTime;
     double avgTurnaroundTime;
 
-    public RoundRobin(int quantum) {
+    public RoundRobinSummary(int quantum) {
 
         this.quantum = quantum;
 
@@ -36,9 +36,6 @@ public class RoundRobin {
             if (process == null) {
                 continue;
             }
-            readyQueue.printReadyQueue();
-
-            System.out.println("Selected Process: " + process);
 
             if (!originalBurstTimes.containsKey(process.getPid())) {
                 originalBurstTimes.put(process.getPid(), process.getBurstTime());
@@ -47,8 +44,6 @@ public class RoundRobin {
             int remainingBurst = process.getBurstTime();
 
             int timeSlice = Math.min(quantum, remainingBurst);
-            System.out.println("Time Slice: " + timeSlice + " for P" + process.getPid());
-            System.out.println("Remaining Burst Before: " + remainingBurst);
             try {
                 Thread.sleep(timeSlice);
             } catch (InterruptedException e) {
@@ -62,7 +57,6 @@ public class RoundRobin {
             process.setBurstTime(remainingBurst);
 
             if (remainingBurst > 0) {
-                System.out.println("P" + process.getPid() + " still has " + remainingBurst + " burst time left.");
                 readyQueue.addProcess(process);
             } else {
                 process.setTurnaroundTime(currentTime);
@@ -70,12 +64,10 @@ public class RoundRobin {
                 int waitingTime = currentTime - originalBurst;
                 process.setWaitingTime(waitingTime);
 
-
                 totalTurnaroundTime += process.getTurnaroundTime();
                 totalWaitingTime += process.getWaitingTime();
                 process.setState("RUNNING");
                 sc.terminated(process);
-                System.out.println("Terminated Process: " + process);
                 num++;
             }
 
