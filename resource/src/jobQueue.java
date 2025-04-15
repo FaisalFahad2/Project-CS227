@@ -4,10 +4,12 @@ import java.util.List;
 public class jobQueue {
   private List<PCB> jobQueueList;
   private int currentProcessIndex;
+  private int numOfProcsess;
 
   public jobQueue() {
     this.jobQueueList = new ArrayList<>();
     this.currentProcessIndex =  -1; 
+    this.numOfProcsess = 0;
   }
 
   public synchronized void addJob(PCB process) {
@@ -21,6 +23,7 @@ public class jobQueue {
       return;
     }
     jobQueueList.add(process);
+    numOfProcsess++;
   }
 
   // get for ready queue 
@@ -65,5 +68,9 @@ public class jobQueue {
   }
   public List<PCB> getJobQueue() {
     return jobQueueList;
+  }
+  public int getNumOfProcsess()
+  {
+	  return numOfProcsess;
   }
 }

@@ -7,8 +7,9 @@ public class memoryManagment {
   }
   
   public synchronized boolean allocateMemory(int requiredMemory) {
+
     if (requiredMemory <= 0) {
-      System.out.println("Memory request must be greater than zero");
+//      System.out.println("Memory request must be greater than zero");
       return false;
     }
 
