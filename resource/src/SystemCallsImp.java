@@ -68,6 +68,8 @@ public class SystemCallsImp implements SystemCalls {
         readyQueue.addProcess(process);
         process.setState("READY");
     }
-   
+    public int getMemorySize() {
+        return memoryManager.getTotalMemory();
+    }
 
 }

@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-    static String filePath = "src/job.txt";
+    static String filePath = "resource/src/job.txt";
     static int quantum = 0;
 
     public static void main(String[] args) {
@@ -145,7 +145,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();
 
@@ -183,7 +183,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();
 
@@ -220,7 +220,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
 
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();
@@ -254,7 +254,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
 
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();
@@ -288,7 +288,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
 
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();
@@ -322,7 +322,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        JobLoaderThread jobLoaderThread = new JobLoaderThread(system);
+        JobLoaderThread jobLoaderThread = new JobLoaderThread(system,jobQueue);
 
         Thread t2 = new Thread(jobLoaderThread);
         t2.start();

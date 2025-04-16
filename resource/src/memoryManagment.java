@@ -39,4 +39,8 @@ public class memoryManagment {
   public int getUsedMemory() {
     return usedmemory;
   }
+
+  public int getTotalMemory() {
+    return memory;
+  }
 }

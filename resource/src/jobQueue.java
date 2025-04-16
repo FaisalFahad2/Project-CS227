@@ -8,7 +8,7 @@ public class jobQueue {
 
   public jobQueue() {
     this.jobQueueList = new ArrayList<>();
-    this.currentProcessIndex =  -1; 
+    this.currentProcessIndex =  -1;
     this.numOfProcsess = 0;
   }
 
@@ -50,14 +50,14 @@ public class jobQueue {
     }
 
     if (jobQueueList.remove(process)) {
-                if (!isEmpty()) {
-                    currentProcessIndex = (currentProcessIndex - 1 + jobQueueList.size()) % jobQueueList.size();
-                } else {
-                    currentProcessIndex = -1;
-                }
-                return true;
-            }
-            return false;
+      if (!isEmpty()) {
+        currentProcessIndex = (currentProcessIndex - 1 + jobQueueList.size()) % jobQueueList.size();
+      } else {
+        currentProcessIndex = -1;
+      }
+      return true;
+    }
+    return false;
   }
 
   public void printJobQueue() {
@@ -71,6 +71,7 @@ public class jobQueue {
   }
   public int getNumOfProcsess()
   {
-	  return numOfProcsess;
+    return numOfProcsess;
   }
+
 }
