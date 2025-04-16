@@ -108,6 +108,7 @@ public class Main {
                                 System.out.println();
                                 break;
                         }
+                        break;
                     case 5:
                         state = false;
                         break;
