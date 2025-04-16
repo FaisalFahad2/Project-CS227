@@ -2,7 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-    static String filePath = "resource/src/job.txt";
+    static String filePath = "src/job.txt";
     static int quantum = 0;
 
     public static void main(String[] args) {
@@ -68,6 +68,7 @@ public class Main {
                         switch (userInput3) {
                             case 1:
                                 case_3();
+                                break;
                             case 2:
                                 case_3_summary();
                                 break;
@@ -107,7 +108,6 @@ public class Main {
                                 System.out.println();
                                 break;
                         }
-						break;
                     case 5:
                         state = false;
                         break;
@@ -156,7 +156,7 @@ public class Main {
         }
 
 
-        FCFS fcfs = new FCFS(readyQueue);
+        FCFS fcfs = new FCFS(readyQueue,true);
 
         fcfs.schedule(readyQueue, jobQueue, system);
         try {
@@ -194,7 +194,7 @@ public class Main {
         }
 
 
-        FCFSSummary fcfs = new FCFSSummary(readyQueue);
+        FCFS fcfs = new FCFS(readyQueue,false);
 
         fcfs.schedule(readyQueue, jobQueue, system);
         try {
@@ -229,8 +229,8 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        RoundRobin r = new RoundRobin(quantum);
-        r.schedule(readyQueue, jobQueue, system);
+        RoundRobin r = new RoundRobin(quantum,true);
+        r.schedule(jobQueue, system, readyQueue);
         try {
             t2.join();
         } catch (InterruptedException e) {
@@ -263,8 +263,8 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        RoundRobinSummary r = new RoundRobinSummary(quantum);
-        r.schedule(readyQueue, jobQueue, system);
+        RoundRobin r = new RoundRobin(quantum,false);
+        r.schedule(jobQueue, system, readyQueue);
         try {
             t2.join();
         } catch (InterruptedException e) {
@@ -297,7 +297,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        PriorityScheduling p = new PriorityScheduling(system, readyQueue);
+        PriorityScheduling p = new PriorityScheduling(system, readyQueue,true);
         p.run(jobQueue);
         try {
             t2.join();
@@ -331,7 +331,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        PrioritySchedulingSummary p = new PrioritySchedulingSummary(system, readyQueue);
+        PriorityScheduling p = new PriorityScheduling(system, readyQueue,false);
         p.run(jobQueue);
         try {
             t2.join();

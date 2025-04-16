@@ -1,82 +1,87 @@
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class RoundRobin {
     private final int quantum;
-    int time[];
-    public static String processNum;
-    public static String processTime;
-    static int numberOfSpace;
-    int num = 0;
-    int currentTime = 0;
-    double totalWaitingTime = 0;
-    double totalTurnaroundTime = 0;
-    int finishedProcessesCount = 0;
-    double avgWaitingTime;
-    double avgTurnaroundTime;
+    private int currentTime;
+    private ReadyQueue readyQueue;
+    private static String processNum;
+    private static String processTime;
+    private static int numberOfSpace;
+    private double avgWaitingTime;
+    private double avgTurnaroundTime;
+    private double totalWaitingTime = 0;
+    private double totalTurnaroundTime = 0;
+    private boolean detailedMode=false;
 
-    public RoundRobin(int quantum) {
+    public RoundRobin(int quantum,boolean detailedMode) {
 
         this.quantum = quantum;
-
+        this.currentTime = 0;
+        this.detailedMode=detailedMode;
     }
 
-    // this method may changes as it produces bad avg
+    public void schedule(jobQueue jq, SystemCalls sc, ReadyQueue readyQueue) {
 
-    public void schedule(ReadyQueue readyQueue, jobQueue jq, SystemCalls sc) {
         if (readyQueue == null) {
             throw new IllegalArgumentException("ReadyQueue cannot be null");
         }
+        int num = 0;
         processNum = "";
         processTime = "";
-        HashMap<Integer, Integer> originalBurstTimes = new HashMap<>();
+        int oo = 0;
 
-        while (num != jq.getNumOfProcsess()) {
-            PCB process = readyQueue.getNextProcess();
-            if (process == null) {
-                continue;
+        while (!jq.isEmpty() && num != jq.getNumOfProcsess()) {
+
+            List<PCB> executedProcesses = readyQueue.getReadyProcesses();
+            for (PCB currentProcess : executedProcesses) {
+                if (detailedMode) {
+                    readyQueue.printReadyQueue();
+                    System.out.println("Selected Process: " + currentProcess);
+                }
+                // Calculate waiting time for this quantum
+                int waitingTime = currentTime - currentProcess.getTurnaroundTime();
+                if (waitingTime > 0) {
+                    currentProcess.setWaitingTime(currentProcess.getWaitingTime() + waitingTime);
+                }
+
+                // Execute for quantum time or until process completes
+                if (detailedMode){
+                    System.out.println("Scheduled Process (now running): " + currentProcess);
+                }
+                int executeTime = Math.min(quantum, currentProcess.getBurstTime());
+                if (detailedMode){
+                    System.out.println("Executing P" + currentProcess.getPid() + " for " + executeTime + " ms.");
+                    System.out.println("Remaining Burst Before: " + currentProcess.getBurstTime());
+                }
+                currentProcess.setBurstTime(currentProcess.getBurstTime() - executeTime);
+                processTime += currentTime + " ";
+                processNum += currentProcess.getPid() + " ";
+                currentTime += executeTime;
+
+                // If process is not finished, put it back in ready queue
+                if (currentProcess.getBurstTime() > 0) {
+                    if (detailedMode){
+                        System.out.println("P" + currentProcess.getPid() + " still has " + currentProcess.getBurstTime() + " burst time left.");
+                    }
+                    sc.addToReadyQueue(currentProcess);
+                } else {
+                    // Process has completed
+                    int turnaroundTime = currentTime; // Total time from start to completion
+                    currentProcess.setTurnaroundTime(turnaroundTime);
+                    totalTurnaroundTime += turnaroundTime;
+                    totalWaitingTime += currentProcess.getWaitingTime();
+                    sc.terminated(currentProcess);
+                    if (detailedMode){
+                        System.out.println("Terminated Process: " + currentProcess);
+                    }
+                    num++;
+                }
             }
-            readyQueue.printReadyQueue();
 
-            System.out.println("Selected Process: " + process);
-
-            if (!originalBurstTimes.containsKey(process.getPid())) {
-                originalBurstTimes.put(process.getPid(), process.getBurstTime());
-            }
-
-            int remainingBurst = process.getBurstTime();
-
-            int timeSlice = Math.min(quantum, remainingBurst);
-            System.out.println("Time Slice: " + timeSlice + " for P" + process.getPid());
-            System.out.println("Remaining Burst Before: " + remainingBurst);
             try {
-                Thread.sleep(timeSlice);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-
-            processTime += currentTime + " ";
-            currentTime += timeSlice;
-            processNum += process.getPid() + " ";
-            remainingBurst -= timeSlice;
-            process.setBurstTime(remainingBurst);
-
-            if (remainingBurst > 0) {
-                System.out.println("P" + process.getPid() + " still has " + remainingBurst + " burst time left.");
-                readyQueue.addProcess(process);
-            } else {
-                process.setTurnaroundTime(currentTime);
-                int originalBurst = originalBurstTimes.get(process.getPid());
-                int waitingTime = currentTime - originalBurst;
-                process.setWaitingTime(waitingTime);
-
-
-                totalTurnaroundTime += process.getTurnaroundTime();
-                totalWaitingTime += process.getWaitingTime();
-                process.setState("RUNNING");
-                sc.terminated(process);
-                System.out.println("Terminated Process: " + process);
-                num++;
             }
 
         }
@@ -88,11 +93,13 @@ public class RoundRobin {
             avgWaitingTime = 0;
             avgTurnaroundTime = 0;
         }
+
         printGanttChart();
+
     }
 
     public void printGanttChart() {
-        calculateNumOfSpaceٍ(processNum);
+        calculateNumOfSpace(processNum);
         for (int i = 0; i < numberOfSpace; i++)
             System.out.print("-");
         System.out.println();
@@ -110,7 +117,7 @@ public class RoundRobin {
         System.out.println();
     }
 
-    public void calculateNumOfSpaceٍ(String proNum) {
+    public void calculateNumOfSpace(String proNum) {
         numberOfSpace = 0;
         String[] numberOfPro = proNum.split(" ");
         for (int i = 0; i < numberOfPro.length; i++) {
@@ -131,9 +138,9 @@ public class RoundRobin {
     public void printGanttChartTime(String time, String process) {
         String[] processTime = time.split(" ");
         String[] numberOfPro = process.split(" ");
-
         for (int i = 0; i < processTime.length; i++) {
             if (numberOfPro[i].length() < 2) {
+
                 if (i == 0)
                     System.out.print(processTime[i] + "      ");
                 else if (i + 1 != processTime.length && processTime[i].length() <= 2
@@ -166,5 +173,6 @@ public class RoundRobin {
         }
 
     }
+
 
 }
