@@ -3,6 +3,7 @@ import java.util.List;
 
 public class jobQueue {
   private List<PCB> jobQueueList;
+  private ArrayList<Integer> jobQueueListPid = new ArrayList<>();
   private int currentProcessIndex;
   private int numOfProcsess;
 
@@ -18,10 +19,11 @@ public class jobQueue {
       return;
     }
 
-    if (jobQueueList.contains(process)) {
-      System.out.println("Process already exists in the job queue");
+    if (jobQueueList.contains(process) || jobQueueListPid.contains(process.getPid())) {
+      System.out.println("Process P" + process.getPid() + " already exists in the job queue");
       return;
     }
+    jobQueueListPid.add(process.getPid());
     jobQueueList.add(process);
     numOfProcsess++;
   }
