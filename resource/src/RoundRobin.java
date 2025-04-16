@@ -69,7 +69,7 @@ public class RoundRobin {
                     int turnaroundTime = currentTime; // Total time from start to completion
                     currentProcess.setTurnaroundTime(turnaroundTime);
                     totalTurnaroundTime += turnaroundTime;
-                    totalWaitingTime += currentProcess.getWaitingTime();
+                    totalWaitingTime += waitingTime;
                     sc.terminated(currentProcess);
                     if (detailedMode){
                         System.out.println("Terminated Process: " + currentProcess);
