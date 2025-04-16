@@ -23,6 +23,7 @@ public class JobLoaderThread implements Runnable {
       if (sysCall.getMemorySize() < process.getRequiredMemory()) {
         System.out.println("Not enough memory for process " + process.getPid() + " with required memory " + process.getRequiredMemory());
         jobQueue.removeJob(process);
+        count++;
         continue;
       }
 
