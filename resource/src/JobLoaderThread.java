@@ -12,7 +12,9 @@ public class JobLoaderThread implements Runnable {
   }
 
   public synchronized void run() {
-    while (!sysCall.isJobQueueEmpty()) {
+    int numberOfProcesses = jobQueue.getNumOfProcsess();
+    int count = 0;
+    while (count < numberOfProcesses) {
       PCB process = sysCall.getJobQueue();
 
       if (process == null)
@@ -34,7 +36,7 @@ public class JobLoaderThread implements Runnable {
         }
         sysCall.addToReadyQueue(process);
       }
-
+      count++;
     }
   }
 }
