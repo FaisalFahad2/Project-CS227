@@ -39,11 +39,14 @@ public class PriorityScheduling {
             PCB highestPriorityProcess = readyProcesses.get(0);
             for (PCB process : readyProcesses) {
                 process.incrementWaitingCycles();
-                if (process.getWaitingCycles() >= StarvationThreshold) {
+                if (process.getStarvationThreshold() == 0) {
+                    process.setStarvationThreshold(readyProcesses.size());
+                }
+                if (process.getWaitingCycles() >= process.getStarvationThreshold()) {
                     if (!starvationProcess.contains(process.getPid()))
                         starvationProcess.add(process.getPid());
                     if (detailedMode) {
-                        System.out.println("Starvation detected for process: " + process);
+                        System.err.println("Starvation detected for process: " + process);
                     }
                 }
                 if (process.getPriority() > highestPriorityProcess.getPriority()) {
@@ -54,6 +57,7 @@ public class PriorityScheduling {
             if (detailedMode) {
                 System.out.println("Selected Highest Priority Process: " + highestPriorityProcess);
             }
+
             highestPriorityProcess.setWaitingTime(currentTime);
             highestPriorityProcess.setState("RUNNING");
             if (detailedMode) {

@@ -8,6 +8,8 @@ public class PCB {
     private int priority;
     private boolean loaded = false;
     private int waitingCycles;
+    private int starvationThreshold = 0;
+    private boolean starvationThresholdSet = false;
 
     public PCB(int pid, int burstTime, int priority, int requiredMemory) {
         this.PID = pid;
@@ -88,5 +90,15 @@ public class PCB {
     }
     public void incrementWaitingCycles() {
         this.waitingCycles++;
+    }
+    public void setStarvationThreshold(int threshold) {
+        if (!starvationThresholdSet) {
+            this.starvationThreshold = threshold;
+            this.starvationThresholdSet = true;
+        }
+    }
+
+    public int getStarvationThreshold() {
+        return starvationThreshold;
     }
 }
